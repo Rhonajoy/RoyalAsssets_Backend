@@ -9,7 +9,7 @@ from django.http  import Http404
 # Create your views here.
 
 @api_view(['POST']) 
-def createuser( request, format=None):
+def createuser(request, format=None):
         serializers = UserSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
@@ -26,9 +26,18 @@ def profilelist( request, format=None):
 @api_view(['GET'])
 def singleprofile(request,user_id):
         user = User.objects.filter(id=user_id).first()
-        profile=Profile.objects.filter(user=user)
+        profile=Profile.objects.filter(user=user).first()
         serializers = ProfileSerializer(profile, many=False)
         return Response(serializers.data)
+@api_view(['PUT'])        
+def put (self, request, pk, format = None):
+        client = self.get_client(pk)
+        serializers = ClientSerializer(client, request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
         
         
 
