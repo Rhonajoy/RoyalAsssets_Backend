@@ -5,20 +5,17 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 # Create your models here.
-CATEGORY = (
+ROLES = (
     ('Admin', 'Admin'),
     ('Procurement_Manager', 'Procurement_Manager'),
-    ('  Employee', 'Employee'),
+    ('Employee', 'Employee'),
 )
 class Profile(models.Model):
     full_name=models.CharField(max_length=50, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email=models.EmailField(max_length = 200)
-
+    role=models.CharField(max_length=50, choices=ROLES, null=True)
     profile_photo = CloudinaryField('image')
-
-   
-
     contact = models.CharField(max_length=50, blank=True, null=True)
 
     def update(self):
@@ -29,7 +26,7 @@ class Profile(models.Model):
 
     def delete_profile(self):
         self.delete()
-     @receiver(post_save, sender=User)
+    @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance)
