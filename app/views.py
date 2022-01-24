@@ -30,9 +30,8 @@ def singleprofile(request,user_id):
         serializers = ProfileSerializer(profile, many=False)
         return Response(serializers.data)
 @api_view(['PUT'])        
-def put (self, request, pk, format = None):
-        client = self.get_client(pk)
-        serializers = ClientSerializer(client, request.data)
+def updateprofile ( request, user_id):
+        serializers = ProfileSerializer( request.data)
         if serializers.is_valid():
             serializers.save()
             return Response(serializers.data)

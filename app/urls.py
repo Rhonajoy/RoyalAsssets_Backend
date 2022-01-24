@@ -6,6 +6,7 @@ urlpatterns=[
  path('api/profile/', views.profilelist,name=''),
  path('api/profile/<user_id>', views.singleprofile,name=''),
  path('api/createuser', views.createuser,name=''),
+ path('api/updateuser/<user_id>', views.updateprofile,name=''),
 
 
    
