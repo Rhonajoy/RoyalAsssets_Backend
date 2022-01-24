@@ -5,6 +5,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 # Create your models here.
+CATEGORY = (
+    ('Admin', 'Admin'),
+    ('Procurement_Manager', 'Procurement_Manager'),
+    ('  Employee', 'Employee'),
+)
 class Profile(models.Model):
     full_name=models.CharField(max_length=50, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
