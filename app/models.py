@@ -12,6 +12,7 @@ ROLES = (
 )
 class Profile(models.Model):
     full_name=models.CharField(max_length=50, blank=True, null=True)
+    
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email=models.EmailField(max_length = 200)
     role=models.CharField(max_length=50, choices=ROLES, null=True)
