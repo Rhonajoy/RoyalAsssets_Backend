@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import cloudinary
+from decouple import config
 import cloudinary.uploader
 import cloudinary.api
 import django_heroku
@@ -24,8 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5#qfj4-*(-px6xq^ge!r7pil8t^9kgn(c0tp6ree#pr-6men*%'
-
+SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -83,8 +83,11 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'royalassets',
+        'USER': 'moringa',
+        'PASSWORD': '12345',
+        'DB_HOST':'127.0.0.1'
     }
 }
 cloudinary.config(
