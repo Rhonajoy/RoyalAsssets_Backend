@@ -1,8 +1,11 @@
+from urllib.request import Request
 from django.contrib import admin
-from django.contrib.auth import admin as auth_admin
-from django.contrib.auth import get_user_model
 
-# Register your models here.
+from .models import Asset, Characteristics, User, Request
 
-User = get_user_model()
+
+admin.site.register(User)
+admin.site.register(Characteristics)
+admin.site.register(Asset)
+admin.site.register(Request)
 

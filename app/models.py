@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
@@ -104,4 +105,44 @@ class Employee(User):
     def request(self):
         return "request"
 
+CATEGORY = (
+    ('Stationary', 'Stationary'),
+    ('Electronics', 'Electronics'),
+    ('Furniture', 'Furniture'),
+)        
+
+
+class Characteristics(models.Model):
     
+    quantity = models.PositiveIntegerField(null=True)
+    category = models.CharField(max_length=50, choices=CATEGORY, null=True)
+
+    def __str__(self):
+        return f'{self.category}'
+
+class Asset(models.Model):
+    type = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    category =  models.ForeignKey(Characteristics, on_delete=models.CASCADE, null=True)
+    asset_name = models.CharField(max_length=100, null=True)
+    asset_value = models.PositiveIntegerField(null=True)
+
+
+    def __str__(self):
+        return f'{self.asset_name}'
+
+URGENCY = (
+    ('High', 'High'),
+    ('Medium', 'Medium'),
+    ('Low', 'Low'),
+
+)     
+
+class Request(models.Model):
+    type = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    asset_name = models.ForeignKey(Asset, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(Characteristics, on_delete=models.CASCADE, null=True)
+    urgency = models.CharField(max_length=50, choices=URGENCY, null=True)
+
+    def __str__(self):
+        return f'{self.asset_name}-{self.urgency}'   
+ 
