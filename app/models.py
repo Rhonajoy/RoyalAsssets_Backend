@@ -11,7 +11,7 @@ class User(AbstractUser):
 
     class Types(models.TextChoices):
         #users
-        ADMIN = "ADMIN", "Admin"
+        ADMINISTRATOR = "ADMINISTRATOR", "Administrator"
         PROC_MANAGER = "PROC_MANAGER", "Proc_Manager"
         EMPLOYEE = "EMPLOYEE", "Employee"
 
@@ -37,9 +37,9 @@ class User(AbstractUser):
 
     """"proxy model managers"""       
 
-class AdminManager(models.Manager):
+class AdministratorManager(models.Manager):
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(type=User.Types.ADMIN) 
+        return super().get_queryset(*args, **kwargs).filter(type=User.Types.ADMINISTRATOR) 
 
 class Proc_ManagerManager(models.Manager):
     def get_queryset(self, *args, **kwargs):
@@ -50,14 +50,14 @@ class EmployeeManager(models.Manager):
         return super().get_queryset(*args, **kwargs).filter(type=User.Types.EMPLOYEE)        
 
 
-class AdminMore(models.Model):
+class AdministratorMore(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     
 
     """proxy models"""  
-class Admin(User):
-    base_type = User.Types.ADMIN
-    objects = AdminManager()
+class Administrator(User):
+    base_type = User.Types.ADMINISTRATOR
+    objects = AdministratorManager()
 
     class Meta:
         proxy = True
