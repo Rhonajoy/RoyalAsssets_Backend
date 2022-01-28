@@ -13,6 +13,10 @@ class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model=RequestAsset
         fields = '__all__'
+class AssetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=RequestAsset
+        fields = '__all__'
 
 
 

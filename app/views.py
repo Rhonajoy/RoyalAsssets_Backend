@@ -22,7 +22,13 @@ from rest_framework import generics, mixins, permissions
 #     queryset = User.objects.all()
 #     serializer_class = ProfileSerializer 
 
-
+@api_view(['POST']) 
+def createrequest(request, format=None):
+        serializers = UserSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 User = get_user_model()

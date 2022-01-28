@@ -78,6 +78,8 @@ class RequestAsset(models.Model):
     quantity=models.IntegerField()
     urgency = models.CharField(max_length=50, choices=URGENCY, null=True)
     is_approved=models.BooleanField(default=False)
+    employee_name = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+
 
     def __str__(self):
         return f'{self.asset_name}-{self.urgency}'   
