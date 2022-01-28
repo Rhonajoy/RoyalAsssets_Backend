@@ -9,11 +9,11 @@ urlpatterns=[
  path('api/profile/', views.profilelist,name=''),
  path('api/createuser/', views.createuser,name=''),
  path('api/createrequest/', views.create_request,name=''),
- path('api/createuser/', views.createuser,name=''),
- path('api/createuser/', views.createuser,name=''),
+ path('api/request/<request_id>', views.single_request,name=''),
+ path('api/request/', views.all_requests,name=''),
  path('api/createasset/', views.create_asset,name=''),
- path('api/createuser/', views.createuser,name=''), 
- path('api/createuser/', views.createuser,name=''),
+ path('api/asset/<asset_id>', views.single_asset,name=''),
+ path('api/asset/', views.all_assets,name=''),
 
 
 
