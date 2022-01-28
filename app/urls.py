@@ -8,6 +8,18 @@ urlpatterns=[
  path('api/profile/<username>',views.UserProfileChangeAPIView.as_view(),name='profile'),
  path('api/profile/', views.profilelist,name=''),
  path('api/createuser/', views.createuser,name=''),
+ path('api/createrequest/', views.create_request,name=''),
+ path('api/createuser/', views.createuser,name=''),
+ path('api/createuser/', views.createuser,name=''),
+ path('api/createasset/', views.create_asset,name=''),
+ path('api/createuser/', views.createuser,name=''), 
+ path('api/createuser/', views.createuser,name=''),
+
+
+
+
+
+
 
 ]
 

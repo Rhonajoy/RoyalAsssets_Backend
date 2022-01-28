@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view
-from app.serializer import ProfileSerializer,UserSerializer,UserProfileChangeSerializer,RequestSerializer
+from app.serializer import ProfileSerializer,UserSerializer,UserProfileChangeSerializer,RequestSerializer,AssetSerializer
 from rest_framework.response import Response
 from app.models import Profile,User,RequestAsset,Asset
 from rest_framework import status,generics
@@ -8,20 +8,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import generics, mixins, permissions
-
-# # Create your views here.
-# class UserList(generics.CreateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer 
-
-# class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer 
-
-# class ProfileList(generics.CreateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = ProfileSerializer 
-
+# requests api
 @api_view(['POST']) 
 def create_request(request, format=None):
         serializers = RequestSerializer(data=request.data)
@@ -39,26 +26,26 @@ def single_request(request,request_id):
         asset_request = RequestAsset.objects.filter(id=request_id).first()
         serializers = RequestSerializer(asset_request, many=False)
         return Response(serializers.data)
-
+# assets API
 @api_view(['POST']) 
 def create_asset(request, format=None):
-        serializers = RequestSerializer(data=request.data)
+        serializers = AssetSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['GET'])
-def all_requests( request, format=None):
-                asset_requests = RequestAsset.objects.all()
-                serializers = RequestSerializer(asset_requests, many=True)
+def all_assets( request, format=None):
+                assets = Asset.objects.all()
+                serializers = AssetSerializer(assets, many=True)
                 return Response(serializers.data)
 @api_view(['GET'])
-def single_request(request,request_id):
-        asset_request = RequestAsset.objects.filter(id=request_id).first()
-        serializers = RequestSerializer(asset_request, many=False)
+def single_asset(request,asset_id):
+        asset = Asset.objects.filter(id=asset_id).first()
+        serializers = Asset(asset, many=False)
         return Response(serializers.data)
         
-
+# update profile api
 
 User = get_user_model()
 
