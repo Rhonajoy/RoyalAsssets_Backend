@@ -39,6 +39,24 @@ def single_request(request,request_id):
         asset_request = RequestAsset.objects.filter(id=request_id).first()
         serializers = RequestSerializer(asset_request, many=False)
         return Response(serializers.data)
+
+@api_view(['POST']) 
+def create_asset(request, format=None):
+        serializers = RequestSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET'])
+def all_requests( request, format=None):
+                asset_requests = RequestAsset.objects.all()
+                serializers = RequestSerializer(asset_requests, many=True)
+                return Response(serializers.data)
+@api_view(['GET'])
+def single_request(request,request_id):
+        asset_request = RequestAsset.objects.filter(id=request_id).first()
+        serializers = RequestSerializer(asset_request, many=False)
+        return Response(serializers.data)
         
 
 
