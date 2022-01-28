@@ -76,7 +76,6 @@ class RequestAsset(models.Model):
     type = models.CharField(max_length=50, choices=TYPE, null=True)
     asset_name = models.ForeignKey(Asset, on_delete=models.CASCADE, null=True)
     quantity=models.IntegerField()
-    category = models.CharField(max_length=50, choices=CATEGORY, null=True)
     urgency = models.CharField(max_length=50, choices=URGENCY, null=True)
     is_approved=models.BooleanField(default=False)
 
