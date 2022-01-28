@@ -48,19 +48,14 @@ CATEGORY = (
 )        
 
 
-class Characteristics(models.Model):
-    
-    quantity = models.PositiveIntegerField(null=True)
-    category = models.CharField(max_length=50, choices=CATEGORY, null=True)
 
-    def __str__(self):
-        return f'{self.category}'
 
 class Asset(models.Model):
-    type = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    category =  models.ForeignKey(Characteristics, on_delete=models.CASCADE, null=True)
-    asset_name = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=50, choices=CATEGORY, null=True)
     asset_value = models.PositiveIntegerField(null=True)
+    quantity=models.PositiveIntegerField()
+    
 
 
     def __str__(self):
@@ -72,12 +67,18 @@ URGENCY = (
     ('Low', 'Low'),
 
 )     
-
-class Request(models.Model):
-    type = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+TYPE = (
+    ('Request', 'Request'),
+    ('Repair', 'Repair'),
+   
+)        
+class RequestAsset(models.Model):
+    type = models.CharField(max_length=50, choices=TYPE, null=True)
     asset_name = models.ForeignKey(Asset, on_delete=models.CASCADE, null=True)
-    category = models.ForeignKey(Characteristics, on_delete=models.CASCADE, null=True)
+    quantity=models.IntegerField()
+    category = models.CharField(max_length=50, choices=CATEGORY, null=True)
     urgency = models.CharField(max_length=50, choices=URGENCY, null=True)
+    is_approved=models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.asset_name}-{self.urgency}'   

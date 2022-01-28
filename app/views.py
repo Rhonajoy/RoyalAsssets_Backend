@@ -36,10 +36,10 @@ class UserIsOwnerOrReadOnly(permissions.BasePermission):
 class UserProfileChangeAPIView(generics.RetrieveAPIView,
                                mixins.DestroyModelMixin,
                                mixins.UpdateModelMixin):
-     permission_classes = (
+    permission_classes = (
          permissions.IsAuthenticated,
          UserIsOwnerOrReadOnly,
-    )
+         )
     serializer_class = UserProfileChangeSerializer
     parser_classes = (MultiPartParser, FormParser,)
 
