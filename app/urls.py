@@ -9,7 +9,7 @@ urlpatterns = [
     # login user
     path("login/", views.LoginView.as_view(), name="login"),
     # create user
-    url(r'^api/users/create/$', views.UserCreateView.as_view()), # create use
+    url(r'^api/users/create/$', views.UserCreateView.as_view()), # create user
     # get user
     url(r'^api/user/$', views.GetUser.as_view()), # get user
 ]
