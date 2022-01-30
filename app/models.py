@@ -59,7 +59,7 @@ class Asset(models.Model):
 
 
     def __str__(self):
-        return f'{self.asset_name}'
+        return f'{self.name}'
 
 URGENCY = (
     ('High', 'High'),
@@ -74,11 +74,11 @@ TYPE = (
 )        
 class RequestAsset(models.Model):
     type = models.CharField(max_length=50, choices=TYPE, null=True)
-    asset_name = models.ForeignKey(Asset, on_delete=models.CASCADE, null=True)
+    asset_name = models.ForeignKey(Asset,max_length=50,on_delete=models.CASCADE,null=True)
     quantity=models.IntegerField()
     urgency = models.CharField(max_length=50, choices=URGENCY, null=True)
     is_approved=models.BooleanField(default=False)
-    employee_name = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    employee_name = models.ForeignKey(User, max_length=50,on_delete=models.CASCADE,null=True)
 
 
     def __str__(self):
