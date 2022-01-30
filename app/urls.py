@@ -3,8 +3,15 @@ from django.conf.urls.static import static
 from . import views
 from django.urls import path
 from .views import UserProfileChangeAPIView
-
+from django.conf.urls import url
+from django.conf import settings
 urlpatterns=[
+# login user
+path("login/", views.LoginView.as_view(), name="login"),
+# create user
+url(r'^api/users/create/$', views.UserCreateView.as_view()), # create user
+# get user
+url(r'^api/user/$', views.GetUser.as_view()), # get user
  path('api/profile/<username>',views.UserProfileChangeAPIView.as_view(),name='profile'),
  path('api/profile/', views.profilelist,name=''),
  path('api/createuser/', views.createuser,name=''),
@@ -15,16 +22,7 @@ urlpatterns=[
  path('api/asset/<asset_id>', views.single_asset,name=''),
  path('api/asset/', views.all_assets,name=''),
 
-
-
-
-
-
-
 ]
-
-
-
-
-   
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
