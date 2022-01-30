@@ -5,9 +5,65 @@ from django.shortcuts import get_object_or_404
 from cloudinary.models import CloudinaryField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
+from django.db.models.signals import post_save
+from rest_framework.authtoken.models import Token
 
 
 # Create your models here.
+class Role(models.Model):
+    """This defines the new roles a user can have
+
+    Args:
+        models ([type]): [description]
+
+    Raises:
+        ValueError: [description]
+        ValueError: [description]
+
+    Returns:
+        [type]: [description]
+    """
+
+    name = models.CharField(
+        max_length=30, verbose_name="The role of a user in the organisation"
+    )
+
+    def insert_roles(self):
+        roles = ["ADMINISTRATOR", "PROCUREMENT_MANAGER", "EMPLOYEE"]
+        for role in roles:
+            new_role = Role(name=role)
+            new_role.save()
+
+    def __str__(self):
+        return self.name
+
+
+class User(AbstractUser):
+    # roles
+    ADMINISTRATOR = 1
+    PROCUREMENT_MANAGER = 2
+    EMPLOYEE = 3
+    # roles choices
+    ROLES = (
+        (ADMINISTRATOR, "Administrator"),
+        (PROCUREMENT_MANAGER, "Procurement Manager"),
+        (EMPLOYEE, "Employee"),
+    )
+
+    # user roles
+    role = models.PositiveSmallIntegerField(choices=ROLES, default=EMPLOYEE)
+
+    def __str__(self):
+        return f"{self.username} - {self.get_role_display()}"
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
+
 ROLES = (
     ('Admin', 'Admin'),
     ('Procurement_Manager', 'Procurement_Manager'),
@@ -86,34 +142,7 @@ class RequestAsset(models.Model):
 
 
 
-# from rest_framework import generics, mixins, permissions
 
-# User = get_user_model()
 
-# class UserIsOwnerOrReadOnly(permissions.BasePermission):
-#     def has_object_permission(self, request, view, obj):
-#         if request.method in permissions.SAFE_METHODS:
-#             return True
-#         return obj.id == request.user.id
 
-# class UserProfileChangeAPIView(generics.RetrieveAPIView,
-#                                mixins.DestroyModelMixin,
-#                                mixins.UpdateModelMixin):
-#     permission_classes = (
-#         permissions.IsAuthenticated,
-#         UserIsOwnerOrReadOnly,
-#     )
-#     serializer_class = UserProfileChangeSerializer
-#     #parser_classes = (MultiPartParser, FormParser,)
 
-#     def get_object(self):
-#         #username = self.kwargs["username"]
-#         username = "moringa"
-#         obj = get_object_or_404(User, username=username)
-#         return obj
-
-#     def delete(self, request, *args, **kwargs):
-#         return self.destroy(request, *args, **kwargs)
-
-#     def put(self, request, *args, **kwargs):
-#         return self.update(request, *args, **kwargs)
