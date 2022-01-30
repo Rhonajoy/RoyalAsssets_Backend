@@ -1,16 +1,18 @@
-# from .views import LoginAPI
+from django.conf.urls import url
 from django.urls import path
-from django.urls import include, path
-from rest_framework import routers
 from . import views
-from rest_framework.authtoken.views import ObtainAuthToken
-router = routers.DefaultRouter()
-router.register(r'register', views.RegisterViewset)
+from django.conf import settings
+from django.conf.urls.static import static
 
 
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('', include(router.urls)),
-    path('auth/', ObtainAuthToken.as_view()),
-    ]
+    # login user
+    path("login/", views.LoginView.as_view(), name="login"),
+    # create user
+    url(r'^api/users/create/$', views.UserCreateView.as_view()), # create use
+    # get user
+    url(r'^api/user/$', views.GetUser.as_view()), # get user
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

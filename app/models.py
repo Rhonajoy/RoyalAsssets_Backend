@@ -1,105 +1,59 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
+class Role(models.Model):
+    """This defines the new roles a user can have
 
-# Create your models here.
-class User(AbstractUser):
-    
+    Args:
+        models ([type]): [description]
 
-    class Types(models.TextChoices):
-        #users
-        ADMINISTRATOR = "ADMINISTRATOR", "Administrator"
-        PROC_MANAGER = "PROC_MANAGER", "Proc_Manager"
-        EMPLOYEE = "EMPLOYEE", "Employee"
+    Raises:
+        ValueError: [description]
+        ValueError: [description]
 
-    base_type = Types.EMPLOYEE
-
-    type = models.CharField(
-        _("Types"), max_length=50, choices=Types.choices, default= base_type
-    )
+    Returns:
+        [type]: [description]
+    """
 
     name = models.CharField(
-        _("Name of User"), blank=True, max_length=255
+        max_length=30, verbose_name="The role of a user in the organisation"
     )
 
-    def get_absolute_url(self):
-        return reverse ("users:detail", kwargs={"username": self.username})
+    def insert_roles(self):
+        roles = ["ADMINISTRATOR", "PROCUREMENT_MANAGER", "EMPLOYEE"]
+        for role in roles:
+            new_role = Role(name=role)
+            new_role.save()
+
+    def __str__(self):
+        return self.name
 
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.type = self.base_type
-        return super().save(*args, **kwargs)
+class User(AbstractUser):
+    # roles
+    ADMINISTRATOR = 1
+    PROCUREMENT_MANAGER = 2
+    EMPLOYEE = 3
+    # roles choices
+    ROLES = (
+        (ADMINISTRATOR, "Administrator"),
+        (PROCUREMENT_MANAGER, "Procurement Manager"),
+        (EMPLOYEE, "Employee"),
+    )
+
+    # user roles
+    role = models.PositiveSmallIntegerField(choices=ROLES, default=EMPLOYEE)
+
+    def __str__(self):
+        return f"{self.username} - {self.get_role_display()}"
 
 
-    """"proxy model managers"""       
-
-class AdministratorManager(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(type=User.Types.ADMINISTRATOR) 
-
-class Proc_ManagerManager(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(type=User.Types.PROC_MANAGER)  
-
-class EmployeeManager(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(type=User.Types.EMPLOYEE)        
-
-
-class AdministratorMore(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    
-
-    """proxy models"""  
-class Administrator(User):
-    base_type = User.Types.ADMINISTRATOR
-    objects = AdministratorManager()
-
-    class Meta:
-        proxy = True
-
-    def delete(self):
-        return "delete"
-
-
-class Proc_ManagerMore(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    department = models.CharField(max_length=255)
-        
-
-class Proc_Manager(User):
-    base_type = User.Types.PROC_MANAGER
-    objects = Proc_ManagerManager()
-
-    @property
-    def more(self):
-        return self.proc_managermore
-
-    class Meta:
-        proxy = True 
-
-    def approve(self):
-        return "Go ahead"   
-
-class EmployeeMore(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    section = models.CharField(max_length=255)
-               
-
-class Employee(User):
-    base_type = User.Types.EMPLOYEE
-    objects = EmployeeManager()
-
-    @property
-    def more(self):
-        return self.employeemore
-
-    class Meta:
-        proxy = True      
-
-    def request(self):
-        return "request"
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
