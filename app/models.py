@@ -53,7 +53,7 @@ class User(AbstractUser):
     )
 
     # user roles
-    role = models.PositiveSmallIntegerField(choices=ROLES, default=EMPLOYEE)
+    role = models.PositiveSmallIntegerField(choices=ROLES)
 
     def __str__(self):
         return f"{self.username} - {self.get_role_display()}"
