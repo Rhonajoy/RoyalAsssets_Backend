@@ -38,6 +38,12 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validate_user()
+            data = { "message": "User logged in successfully",
+                     "username":user.username,
+                      "role": user.role,
+                      
+                      }
+
             # get user token
             token, created = Token.objects.get_or_create(user=user)
             data["token"] = token.key
@@ -65,15 +71,21 @@ class UserCreateView(APIView):  # create user
             role = 1
         elif '@proc_manager' in email:
             role = 2
+        elif '@employee' in email:
+            role = 3
         else:
-            role = 3  
+            return Response( status=status.HTTP_400_BAD_REQUEST)
 
                  
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(role=role)
             # return success message
-            data = {"message": "User created successfully"}
+            data = {"username":data['username'],
+                      "email":data['email'],
+                      "message": "User created successfully",
+                      }
+                   
             return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
