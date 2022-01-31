@@ -107,9 +107,9 @@ CATEGORY = (
 
 
 class Asset(models.Model):
-    name = models.CharField(max_length=100, null=True)
-    category = models.CharField(max_length=50, choices=CATEGORY, null=True)
-    asset_value = models.PositiveIntegerField(null=True)
+    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=50, choices=CATEGORY)
+    asset_value = models.PositiveIntegerField()
     quantity=models.IntegerField()
     
 

@@ -1,6 +1,6 @@
 #from pyexpat import model
 from rest_framework import serializers
-from .models import  User,Profile,RequestAsset
+from .models import  User,Profile,RequestAsset,Asset
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
@@ -15,7 +15,7 @@ class RequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
 class AssetSerializer(serializers.ModelSerializer):
     class Meta:
-        model=RequestAsset
+        model=Asset
         fields = '__all__'
 
 

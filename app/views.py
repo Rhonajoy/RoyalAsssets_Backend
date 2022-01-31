@@ -152,7 +152,7 @@ def all_assets( request, format=None):
 @api_view(['GET'])
 def single_asset(request,asset_id):
         asset = Asset.objects.filter(id=asset_id).first()
-        serializers = Asset(asset, many=False)
+        serializers = AssetSerializer(asset)
         return Response(serializers.data)
         
 # update profile api
