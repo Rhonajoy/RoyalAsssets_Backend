@@ -57,9 +57,20 @@ class UserCreateView(APIView):  # create user
     # permission_classes = (CreateUserPermission,)
     @swagger_auto_schema(request_body=UserCreateSerializer)
     def post(self, request, format=None):
+        data=request.data
+        print (data)
+        email=data['email']
+        if '@admin' in email:
+            role = 1
+        elif '@proc_manager' in email:
+            role = 2
+        else:
+            role = 3  
+
+                 
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(role=role)
             # return success message
             data = {"message": "User created successfully"}
             return Response(data, status=status.HTTP_201_CREATED)
