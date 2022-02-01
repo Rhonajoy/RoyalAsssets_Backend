@@ -154,6 +154,16 @@ def single_asset(request,asset_id):
         asset = Asset.objects.filter(id=asset_id).first()
         serializers = AssetSerializer(asset)
         return Response(serializers.data)
+@api_view(['POST'])
+def update_request(request,request_id):
+   status=RequestAsset.objects.filter(id=request_id).only('is_approved')
+   serializer=RequestSerializer(instance=status,data=request.data)
+   if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+   return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
         
 # update profile api
 
