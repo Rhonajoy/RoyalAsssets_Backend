@@ -103,9 +103,6 @@ CATEGORY = (
     ('Furniture', 'Furniture'),
 )        
 
-
-
-
 class Asset(models.Model):
     name = models.CharField(max_length=100, null=True)
     category = models.CharField(max_length=50, choices=CATEGORY, null=True)
@@ -142,7 +139,32 @@ class RequestAsset(models.Model):
 
 
 
+DEPARTMENT = (
+    ('Finance', 'Finance'),
+    ('Human Resource', 'Human Resource'),
+    ('Marketing', 'Marketing')
+)
 
+class Add_staff(models.Model):
+    contact = models.IntegerField(User, null=True)
+    username = models.CharField(User, max_length=15, null=True)
+    # username = models.ForeignKey(User, max_length=50,on_delete=models.CASCADE,null=True)
+    #role = models.CharField(max_length=50, choices=ROLES, null=True)
+    #employee_name = models.ForeignKey(User, max_length=50,on_delete=models.CASCADE,null=True)
+    department = models.CharField(User, max_length=15, choices=DEPARTMENT , null=True)
+
+    def update(self):
+        self.save()
+
+    def save_add_staff(self):
+        self.save()
+
+    def delete_add_staff(self):
+        self.delete()
+
+    
+    def __str__(self):
+        return f'{self.username}'
 
 
 
