@@ -136,7 +136,47 @@ def single_request(request,request_id):
         asset_request = RequestAsset.objects.filter(id=request_id).first()
         serializers = RequestSerializer(asset_request, many=False)
         return Response(serializers.data)
-# assets API
+@api_view(['PUT'])
+def approve_request(request,request_id):
+    asset_request = RequestAsset.objects.filter(id=request_id).first()
+    asset_request.is_approved='Approved'
+    asset_request.save()
+    message="Updated Successfully"
+    return Response(message,status=status.HTTP_201_CREATED)
+@api_view(['PUT'])
+def decline_request(request,request_id):
+    asset_request = RequestAsset.objects.filter(id=request_id).first()
+    asset_request.is_approved='Declined'
+    asset_request.save()
+    message="Updated Successfully"
+    return Response(message,status=status.HTTP_201_CREATED)
+
+#    status=RequestAsset.objects.filter(id=request_id).only('is_approved')
+#    serializer=RequestSerializer(instance=status,data=request.data)
+
+#    if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# @api_view(['GET', 'PUT', 'DELETE'])
+# def tutorial_detail(request, pk):
+#     try: 
+#         tutorial = Tutorial.objects.get(pk=pk) 
+#     except Tutorial.DoesNotExist: 
+#         return JsonResponse({'message': 'The tutorial does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+ 
+#     if request.method == 'GET': 
+#         tutorial_serializer = TutorialSerializer(tutorial) 
+#         return JsonResponse(tutorial_serializer.data) 
+ 
+#     elif request.method == 'PUT': 
+#         tutorial_data = JSONParser().parse(request) 
+#         tutorial_serializer = TutorialSerializer(tutorial, data=tutorial_data) 
+#         if tutorial_serializer.is_valid(): 
+#             tutorial_serializer.save() 
+#             return JsonResponse(tutorial_serializer.data) 
+#         return JsonResponse(tutorial_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+# # assets API
 @api_view(['POST']) 
 def create_asset(request, format=None):
         serializers = AssetSerializer(data=request.data)
@@ -154,14 +194,7 @@ def single_asset(request,asset_id):
         asset = Asset.objects.filter(id=asset_id).first()
         serializers = AssetSerializer(asset)
         return Response(serializers.data)
-@api_view(['POST'])
-def update_request(request,request_id):
-   status=RequestAsset.objects.filter(id=request_id).only('is_approved')
-   serializer=RequestSerializer(instance=status,data=request.data)
-   if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-   return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
         

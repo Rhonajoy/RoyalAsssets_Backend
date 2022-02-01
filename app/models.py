@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -139,7 +140,7 @@ class RequestAsset(models.Model):
     asset_name = models.CharField(max_length=50,null=True)
     quantity=models.IntegerField()
     urgency = models.CharField(max_length=50, choices=URGENCY, null=True)
-    is_approved=models.CharField(max_length=50, choices=STATUS, null=True)
+    is_approved=models.CharField(max_length=50, choices=STATUS,default='Pending', null=True)
     employee_name = models.ForeignKey(User, max_length=50,on_delete=models.CASCADE,null=True)
 
 
