@@ -114,6 +114,18 @@ class Asset(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+    def update(self):
+        self.save()
+
+    def save_add_staff(self):
+        self.save()
+
+    def delete_add_staff(self):
+        self.delete()
+
+    
+    
+
 
 URGENCY = (
     ('High', 'High'),
@@ -144,6 +156,18 @@ class RequestAsset(models.Model):
 
     def __str__(self):
         return f'{self.asset_name}-{self.urgency}'   
+    def update(self):
+        self.save()
+
+    def save_add_staff(self):
+        self.save()
+
+    def delete_add_staff(self):
+        self.delete()
+
+    
+    
+
 
 
 
