@@ -186,6 +186,16 @@ def profilelist( request, format=None):
 #         serializers = ProfileSerializer(profile, many=False)
 #         return Response(serializers.data)
 
+@api_view(['POST'])
+def add_stafflist( request, format=None):
+                #all_add_staff = Add_staff.objects.all()
+                serializers = Add_staffSerializer(data=request.data)
+                
+                if serializers.is_valid():
+                    serializers.save()
+                    return Response(serializers.data, status=status.HTTP_201_CREATED)
+                return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+                
 
 
 

@@ -61,3 +61,9 @@ class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "username", "email", "first_name", "last_name")
+
+
+class Add_staffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Add_staff
+        fields = ("id","username","contact","roles","department")

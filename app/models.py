@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from cloudinary.models import CloudinaryField
+from cloudinary.models import  CloudinaryField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractUser
@@ -140,8 +140,37 @@ class RequestAsset(models.Model):
     def __str__(self):
         return f'{self.asset_name}-{self.urgency}'   
 
+ROLES = (
+    ('Admin', 'Admin'),
+    ('Procurement_Manager', 'Procurement_Manager'),
+    ('Employee', 'Employee'),
+)
 
+DEPARTMENT = (
+    ('Finance', 'Finance'),
+    ('Human Resource', 'Human Resource'),
+    ('Marketing', 'Marketing')
+)
 
+class Add_staff(models.Model):
+    contact = models.IntegerField(User, null=True)
+    username = models.ForeignKey(User, max_length=50,on_delete=models.CASCADE,null=True)
+    #role = models.CharField(max_length=50, choices=ROLES, null=True)
+    #employee_name = models.ForeignKey(User, max_length=50,on_delete=models.CASCADE,null=True)
+    department = models.CharField(User, max_length=15, choices=DEPARTMENT , null=True)
+
+    def update(self):
+        self.save()
+
+    def save_add_staff(self):
+        self.save()
+
+    def delete_add_staff(self):
+        self.delete()
+
+    
+    def __str__(self):
+        return f'{self.username}'
 
 
 
