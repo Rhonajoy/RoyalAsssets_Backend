@@ -69,7 +69,7 @@ class UserCreateView(APIView):  # create user
         email=data['email']
         if '@admin' in email:
             role = 1
-        elif '@proc_manager' in email:
+        elif '@manager' in email:
             role = 2
         elif '@employee' in email:
             role = 3
@@ -152,7 +152,7 @@ def all_assets( request, format=None):
 @api_view(['GET'])
 def single_asset(request,asset_id):
         asset = Asset.objects.filter(id=asset_id).first()
-        serializers = Asset(asset, many=False)
+        serializers = AssetSerializer(asset)
         return Response(serializers.data)
         
 # update profile api

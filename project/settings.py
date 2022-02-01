@@ -110,7 +110,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'royal1',
+        'NAME': 'royal',
         'USER': 'moringa',
         'PASSWORD': 'moringa',
         'DB_HOST':'127.0.0.1'
@@ -170,3 +170,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # user auth
 AUTH_USER_MODEL = "app.User"
+
+django_heroku.settings(locals())
