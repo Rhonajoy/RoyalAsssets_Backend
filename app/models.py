@@ -53,7 +53,7 @@ class User(AbstractUser):
     )
 
     # user roles
-    role = models.PositiveSmallIntegerField(choices=ROLES)
+    role = models.PositiveSmallIntegerField(choices=ROLES,null=True)
 
     def __str__(self):
         return f"{self.username} - {self.get_role_display()}"
@@ -127,14 +127,21 @@ TYPE = (
     ('Request', 'Request'),
     ('Repair', 'Repair'),
    
-)        
+)  
+STATUS=(
+    ('Pending', 'Pending'),
+    ('Approved', 'Approved'),
+    ('Declined', 'Declined'),
+    
+)      
 class RequestAsset(models.Model):
     type = models.CharField(max_length=50, choices=TYPE, null=True)
-    asset_name = models.ForeignKey(Asset,max_length=50,on_delete=models.CASCADE,null=True)
+    asset_name = models.CharField(max_length=50,null=True)
     quantity=models.IntegerField()
     urgency = models.CharField(max_length=50, choices=URGENCY, null=True)
-    is_approved=models.BooleanField(default=False)
+    is_approved=models.CharField(max_length=50, choices=STATUS, null=True)
     employee_name = models.ForeignKey(User, max_length=50,on_delete=models.CASCADE,null=True)
+
 
 
     def __str__(self):
