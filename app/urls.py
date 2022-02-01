@@ -21,7 +21,8 @@ url(r'^api/user/$', views.GetUser.as_view()), # get user
  path('api/createasset/', views.create_asset,name=''),
  path('api/asset/<asset_id>', views.single_asset,name=''),
  path('api/asset/', views.all_assets,name=''),
-
+ path('api/addstaff/', views.add_stafflist,name=''),
+ path('api/deletestaff/<str:pk>/', views.deleteStaff,name='')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
