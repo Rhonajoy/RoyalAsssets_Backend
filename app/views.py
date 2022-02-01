@@ -69,7 +69,7 @@ class UserCreateView(APIView):  # create user
         email=data['email']
         if '@admin' in email:
             role = 1
-        elif '@proc_manager' in email:
+        elif '@manager' in email:
             role = 2
         elif '@employee' in email:
             role = 3
