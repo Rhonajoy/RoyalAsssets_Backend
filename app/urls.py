@@ -17,6 +17,8 @@ url(r'^api/user/$', views.GetUser.as_view()), # get user
  path('api/createuser/', views.createuser,name=''),
  path('api/createrequest/', views.create_request,name=''),
  path('api/request/<request_id>', views.single_request,name=''),
+ path('api/approve-request/<request_id>', views.approve_request,name=''),
+ path('api/decline-request/<request_id>', views.decline_request,name=''),
  path('api/request/', views.all_requests,name=''),
  path('api/createasset/', views.create_asset,name=''),
  path('api/asset/<asset_id>', views.single_asset,name=''),

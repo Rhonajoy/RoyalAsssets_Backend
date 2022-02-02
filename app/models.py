@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -113,6 +114,18 @@ class Asset(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+    def update(self):
+        self.save()
+
+    def save_add_staff(self):
+        self.save()
+
+    def delete_add_staff(self):
+        self.delete()
+
+    
+    
+
 
 URGENCY = (
     ('High', 'High'),
@@ -136,13 +149,25 @@ class RequestAsset(models.Model):
     asset_name = models.CharField(max_length=50,null=True)
     quantity=models.IntegerField()
     urgency = models.CharField(max_length=50, choices=URGENCY, null=True)
-    is_approved=models.CharField(max_length=50, choices=STATUS, null=True)
+    is_approved=models.CharField(max_length=50, choices=STATUS,default='Pending', null=True)
     employee_name = models.ForeignKey(User, max_length=50,on_delete=models.CASCADE,null=True)
 
 
 
     def __str__(self):
         return f'{self.asset_name}-{self.urgency}'   
+    def update(self):
+        self.save()
+
+    def save_add_staff(self):
+        self.save()
+
+    def delete_add_staff(self):
+        self.delete()
+
+    
+    
+
 
 
 
