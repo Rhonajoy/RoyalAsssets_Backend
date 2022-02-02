@@ -268,6 +268,19 @@ def deleteStaff( request,pk):
                 staffs.delete()
               
                 return Response(status=status.HTTP_204_NO_CONTENT)
+@api_view(['GET'])
+def stafflist( request, format=None):
+                list = Add_staff.objects.all()
+                serializers = Add_staffSerializer(list,many=True)
+                
+                return Response(serializers.data)
+
+
+
+                            
+
+
+
                 
 
 

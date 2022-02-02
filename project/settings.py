@@ -110,7 +110,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'royal',
+        'NAME': 'gf',
         'USER': 'moringa',
         'PASSWORD': 'moringa',
         'DB_HOST':'127.0.0.1'
