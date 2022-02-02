@@ -117,10 +117,10 @@ class Asset(models.Model):
     def update(self):
         self.save()
 
-    def save_add_staff(self):
+    def save_asset(self):
         self.save()
 
-    def delete_add_staff(self):
+    def delete_asset(self):
         self.delete()
 
     
@@ -159,10 +159,10 @@ class RequestAsset(models.Model):
     def update(self):
         self.save()
 
-    def save_add_staff(self):
+    def save_request(self):
         self.save()
 
-    def delete_add_staff(self):
+    def delete_request(self):
         self.delete()
 
     
